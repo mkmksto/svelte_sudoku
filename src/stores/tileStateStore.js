@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
 
 export const tileState = writable([
     {
@@ -10,3 +10,7 @@ export const tileState = writable([
         isActiveTile: false,
     },
 ])
+
+export const gameWon = derived(tileState, () => {
+    // derive game state here
+})

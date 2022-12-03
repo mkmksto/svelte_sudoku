@@ -7,6 +7,7 @@
     // export let isValidvalue
     // export let isReplaceable
     export let isActive
+    export let isUserInput
 
     function tileClick(coord, isClickedTileActive) {
         clearPreviousActiveTiles()
@@ -40,6 +41,7 @@
 <div
     class="tile"
     class:active-tile={isActive}
+    class:user-input={isUserInput}
     on:click={() => tileClick(coord, isActive)}
 >
     {userInputValue}
@@ -50,7 +52,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1rem;
+        font-size: 1.4rem;
         color: rgb(90, 90, 90);
         width: 50px;
         height: 50px;
@@ -60,5 +62,9 @@
 
     .active-tile {
         background-color: rgb(180, 180, 180);
+    }
+
+    .user-input {
+        color: rgb(0, 107, 238);
     }
 </style>
