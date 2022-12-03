@@ -24,7 +24,7 @@ export function initEmptyArray(arraySize) {
 
 /**
  *
- * @returns 1D sudoku array where each item is an object
+ * @returns An empty 1D sudoku array where each item is an object
  */
 export function initObjectArray() {
     const sudokuArray = []
@@ -39,8 +39,27 @@ export function initObjectArray() {
                 isReplaceable: undefined,
                 isActiveTile: false,
             })
-            // flatStringIdx++
         }
     }
     return sudokuArray
+}
+
+/**
+ *
+ * @param {*} str
+ * @param {number} numToDelete: number of items to delete
+ */
+export function delRandElements(str, numToDelete) {
+    const newArr = str.split('')
+    for (let i = 0; i < numToDelete; i++) {
+        const randIdx = getRandomInt(0, str.length)
+        newArr[randIdx] = 'x'
+    }
+
+    console.log(newArr)
+    return newArr.join('')
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
