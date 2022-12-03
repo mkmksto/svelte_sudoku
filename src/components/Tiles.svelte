@@ -52,8 +52,8 @@
 
 <style>
     :root {
-        --default-border: 0.1px solid rgb(200, 200, 200);
-        --three-by-three: 3px solid rgb(170, 170, 170);
+        --default-border: 0.1px solid rgba(200, 200, 200, 0.3);
+        --three-by-three: 3px solid rgba(170, 170, 170, 0.35);
     }
 
     .tile {
@@ -67,6 +67,7 @@
         height: 60px;
         border: var(--default-border);
         user-select: none;
+        opacity: 0.85;
         transition: background-color 0.2s ease;
     }
 

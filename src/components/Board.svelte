@@ -91,5 +91,6 @@
         grid-template-rows: repeat(9, 1fr);
         width: 540px;
         height: 540px;
+        box-shadow: 0 0 13px rgba(0, 0, 0, 0.1);
     }
 </style>
