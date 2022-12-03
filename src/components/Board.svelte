@@ -30,7 +30,7 @@
             prevState.forEach((tileObj, idx) => {
                 tileObj.realValue = sample1[idx]
 
-                // removed from original puzzle
+                // values removed from original puzzle
                 if (newSample[idx] != 'x') {
                     tileObj.userInputValue = sample1[idx]
                     tileObj.isReplaceable = false
@@ -71,12 +71,14 @@
 />
 
 <div class="board">
-    {#each $tileState as { coord, realValue, isActiveTile, userInputValue, isUserInput } (coord)}
+    {#each $tileState as { coord, realValue, isActiveTile, userInputValue, isUserInput, isReplaceable, isValidValue } (coord)}
         <Tiles
             {realValue}
             {coord}
             {userInputValue}
             {isUserInput}
+            {isReplaceable}
+            {isValidValue}
             bind:isActive={isActiveTile}
         />
     {/each}
@@ -87,7 +89,7 @@
         display: grid;
         grid-template-columns: repeat(9, 1fr);
         grid-template-rows: repeat(9, 1fr);
-        width: 450px;
-        height: 450px;
+        width: 540px;
+        height: 540px;
     }
 </style>
