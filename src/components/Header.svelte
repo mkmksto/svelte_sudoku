@@ -1,6 +1,6 @@
 <script></script>
 
-<div class="header">Mikee's Sudoku</div>
+<div class="header">mkmksto's Sudoku</div>
 
 <style>
     .header {

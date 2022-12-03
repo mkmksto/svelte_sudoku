@@ -1,12 +1,30 @@
 import { writable } from 'svelte/store'
 
-export const tiles = writable([])
+export const tileState = writable([
+    {
+        coord: '0-0',
+        realValue: '1',
+        userInputValue: '',
+        isValidValue: undefined,
+        isReplaceable: undefined,
+        isActiveTile: false,
+    },
+])
 
-// contents
-// isReplaceable (bool)
-// currentValue numfrom 1-9 or none
-// globalCoord (from 9x9) (will also serve as unique ID)
-// column coord
-// row coord
-// localCoord
-// isInvalidValue
+// function initializeObjectArray() {
+//     const sudokuArray = []
+
+//     for (let row = 0; row < 9; row++) {
+//         for (let col = 0; col < 9; col++) {
+//             sudokuArray.push({
+//                 coord: `${row}-${col}`,
+//                 realValue: '',
+//                 userInputValue: '',
+//                 isValidValue: undefined,
+//                 isReplaceable: undefined,
+//                 isActiveTile: false,
+//             })
+//         }
+//     }
+//     return sudokuArray
+// }
