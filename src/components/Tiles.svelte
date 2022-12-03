@@ -8,35 +8,22 @@
     // export let isReplaceable
     export let isActive
 
-    function tileClick(coord) {
+    function tileClick(coord, isClickedTileActive) {
         clearPreviousActiveTiles()
 
-        // const tileToActivate = $tileState.find(
-        //     (tileObj) => tileObj.coord === coord
-        // )
-        // console.log(tileToActivate.isActiveTile)
-        // if (tileToActivate.isActiveTile) {
-        //     tileToActivate.isActiveTile = false
-        // } else {
-        //     tileToActivate.isActiveTile = true
-        // }
-
-        // $tileState = $tileState
         tileState.update((previousStateArr) => {
             const tileToActivate = previousStateArr.find(
                 (tileObj) => tileObj.coord === coord
             )
 
-            console.log(tileToActivate.coord)
-            console.log(tileToActivate.isActiveTile)
             // if already active, deactivate
-            if (tileToActivate.isActiveTile) {
+            if (isClickedTileActive) {
                 tileToActivate.isActiveTile = false
             } else {
                 tileToActivate.isActiveTile = true
             }
 
-            return [...previousStateArr]
+            return previousStateArr
         })
     }
 
@@ -53,7 +40,7 @@
 <div
     class="tile"
     class:active-tile={isActive}
-    on:click={() => tileClick(coord)}
+    on:click={() => tileClick(coord, isActive)}
 >
     {realValue}, {coord}, {isActive}
 </div>
