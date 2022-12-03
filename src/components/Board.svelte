@@ -19,16 +19,12 @@
     }
 
     function populateTileStore() {
-        tileState.update((previousStateArr) => {
-            console.log(previousStateArr)
-
-            const newArr = [...previousStateArr]
-            newArr.forEach((tileObj, idx) => {
+        tileState.update((prevState) => {
+            prevState.forEach((tileObj, idx) => {
                 tileObj['realValue'] = sample1[idx]
             })
 
-            console.log(newArr)
-            return newArr
+            return prevState
         })
     }
 </script>

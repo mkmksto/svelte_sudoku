@@ -11,8 +11,8 @@
     function tileClick(coord, isClickedTileActive) {
         clearPreviousActiveTiles()
 
-        tileState.update((previousStateArr) => {
-            const tileToActivate = previousStateArr.find(
+        tileState.update((prevState) => {
+            const tileToActivate = prevState.find(
                 (tileObj) => tileObj.coord === coord
             )
 
@@ -23,16 +23,16 @@
                 tileToActivate.isActiveTile = true
             }
 
-            return previousStateArr
+            return prevState
         })
     }
 
     function clearPreviousActiveTiles() {
-        tileState.update((previousStateArr) => {
-            previousStateArr.forEach((tileObj) => {
+        tileState.update((prevState) => {
+            prevState.forEach((tileObj) => {
                 tileObj.isActiveTile = false
             })
-            return previousStateArr
+            return prevState
         })
     }
 </script>
