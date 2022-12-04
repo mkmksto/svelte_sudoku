@@ -4,7 +4,7 @@
     import {
         delRandElements,
         initObjectArray,
-        validateInRow,
+        isInputValid,
     } from '../utils/arrayManipulation'
     import { validKeys } from '../utils/keyboardUtils'
     import { sample1 } from '../utils/sampleProblems'
@@ -65,7 +65,14 @@
         if (!activeTile) return
         if (!isTileReplaceable(activeTile)) return
 
-        console.log(validateInRow($tileState, activeTile))
+        // validate first before assigning the user input to the tile
+        // this makes things easier to validate
+        // because IisInputValido take into account things like
+        // comparing the value to itself
+        // console.log(isInputValid($tileState, activeTile, e.key))
+
+        activeTile.isValidValue = isInputValid($tileState, activeTile, e.key)
+        console.log(`the value is ${activeTile.isValidValue}`)
         activeTile.userInputValue = e.key
         activeTile.isUserInput = true
 

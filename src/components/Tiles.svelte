@@ -108,7 +108,7 @@
         color: rgb(0, 107, 238);
     }
 
-    /* .invalid-tile {
+    .invalid-tile {
         color: red;
-    } */
+    }
 </style>
