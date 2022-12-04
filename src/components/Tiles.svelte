@@ -1,7 +1,7 @@
 <script>
     import { tileState } from '../stores/tileStateStore'
 
-    export let realValue
+    // export let realValue
     export let coord
     export let userInputValue
     export let isValidValue

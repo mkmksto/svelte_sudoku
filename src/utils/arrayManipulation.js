@@ -24,7 +24,7 @@ export function isInputValid(objArr, activeTile, userInputValue) {
     const valInRow = localRow.includes(userInputValue)
     const valInCol = localCol.includes(userInputValue)
 
-    console.log(`the 3 vals: ${valInGroup}, ${valInRow}, ${valInCol}`)
+    console.log(`the 3 values: ${valInGroup}, ${valInRow}, ${valInCol}`)
     if ([valInGroup, valInRow, valInCol].some((bool) => bool === true)) {
         return false
     } else {
@@ -33,8 +33,8 @@ export function isInputValid(objArr, activeTile, userInputValue) {
 }
 
 function getLocalGroup(objArr, activeTile) {
-    const curRow = parseInt(getCurrentRowCoord(objArr, activeTile))
-    const curCol = parseInt(getCurrentColCoord(objArr, activeTile))
+    const curRow = parseInt(getCurrentRowCoord(activeTile))
+    const curCol = parseInt(getCurrentColCoord(activeTile))
 
     const firstBlock = [0, 1, 2]
     const secondBlock = [3, 4, 5]
@@ -79,24 +79,24 @@ function getLocalGroup(objArr, activeTile) {
  * @returns An array containing the row to which a tile belongs
  */
 function getRow(objArr, activeTile) {
-    const curRow = getCurrentRowCoord(objArr, activeTile)
+    const curRow = getCurrentRowCoord(activeTile)
     const pattern = new RegExp(`${curRow}-[0-8]`)
     return objArr.filter((obj) => obj.coord.match(pattern))
 }
 
 function getCol(objArr, activeTile) {
-    const curCol = getCurrentColCoord(objArr, activeTile)
+    const curCol = getCurrentColCoord(activeTile)
     const pattern = new RegExp(`[0-8]-${curCol}`)
     return objArr.filter((obj) => obj.coord.match(pattern))
 }
 
-function getCurrentRowCoord(objArr, activeTile) {
+function getCurrentRowCoord(activeTile) {
     const activeCoord = activeTile.coord
     const curRow = activeCoord.match(/([0-8])-[0-8]/)
     return curRow[1]
 }
 
-function getCurrentColCoord(objArr, activeTile) {
+function getCurrentColCoord(activeTile) {
     const activeCoord = activeTile.coord
     const curCol = activeCoord.match(/[0-8]-([0-8])/)
     return curCol[1]

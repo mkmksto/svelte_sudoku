@@ -89,7 +89,6 @@
 <div class="board">
     {#each $tileState as { coord, realValue, isActiveTile, userInputValue, isUserInput, isReplaceable, isValidValue } (coord)}
         <Tiles
-            {realValue}
             {coord}
             {userInputValue}
             {isUserInput}
