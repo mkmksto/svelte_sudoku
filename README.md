@@ -13,3 +13,4 @@
 -   two ways to do this:
 -   from your helper functions, return the coords of the offending tiles
 -   or (more expensively), recalc the validity of every non-replaceable user input
+-   implement navigation using arrow keys

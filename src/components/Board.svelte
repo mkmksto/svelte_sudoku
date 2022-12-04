@@ -70,9 +70,7 @@
         // because IisInputValido take into account things like
         // comparing the value to itself
         // console.log(isInputValid($tileState, activeTile, e.key))
-
         activeTile.isValidValue = isInputValid($tileState, activeTile, e.key)
-        console.log(`the value is ${activeTile.isValidValue}`)
         activeTile.userInputValue = e.key
         activeTile.isUserInput = true
 

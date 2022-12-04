@@ -10,8 +10,6 @@ let sample =
  * @returns (bool) indicates whether the user input is valid or not
  */
 export function isInputValid(objArr, activeTile, userInputValue) {
-    console.log(`user input: ${userInputValue}`)
-
     // compare ONLY to previous user-input values(this includes the numbers present at the start of the puzzle), not to the real values
     const localGroup = getLocalGroup(objArr, activeTile).map(
         (obj) => obj.userInputValue
@@ -19,12 +17,10 @@ export function isInputValid(objArr, activeTile, userInputValue) {
     const localRow = getRow(objArr, activeTile).map((obj) => obj.userInputValue)
     const localCol = getCol(objArr, activeTile).map((obj) => obj.userInputValue)
 
-    console.log(localGroup, localRow, localCol)
     const valInGroup = localGroup.includes(userInputValue)
     const valInRow = localRow.includes(userInputValue)
     const valInCol = localCol.includes(userInputValue)
 
-    console.log(`the 3 values: ${valInGroup}, ${valInRow}, ${valInCol}`)
     if ([valInGroup, valInRow, valInCol].some((bool) => bool === true)) {
         return false
     } else {
