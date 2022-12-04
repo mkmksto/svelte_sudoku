@@ -35,9 +35,10 @@ export function initObjectArray() {
                 coord: `${row}-${col}`,
                 realValue: '',
                 userInputValue: '',
-                isValidValue: undefined,
+                isValidValue: true,
                 isReplaceable: undefined,
                 isActiveTile: false,
+                isUserInput: false,
             })
         }
     }
