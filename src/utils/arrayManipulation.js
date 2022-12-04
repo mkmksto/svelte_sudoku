@@ -1,14 +1,49 @@
-import { tileState } from '../stores/tileStateStore'
+// import { tileState } from '../stores/tileStateStore'
 
 let sample =
     '649123875827465139135789264518934627276518493493672518752346981364891752981257346'
 
-export function validateInRow() {
-    let state
-    const unsub = tileState.subscribe((val) => {
-        state = val
-    })
-    console.log(state)
+export function validateInRow(objArr, activeTile) {
+    // let state
+    // const unsub = tileState.subscribe((val) => {
+    //     state = val
+    // })
+    // console.log(state)
+    return getCol(objArr, activeTile)
+}
+
+function getLocalGroup(objArr, activeTile) {
+    const activeCoord = activeTile.coord
+}
+
+/**
+ *
+ * @param {Array} objArr: full sudoku object array
+ * @param {Object} activeTile
+ * @returns An array containing the row to which a tile belongs
+ */
+function getRow(objArr, activeTile) {
+    const curRow = getCurrentRowCoord(objArr, activeTile)
+    const pattern = new RegExp(`${curRow}-[0-8]`)
+    return objArr.filter((obj) => obj.coord.match(pattern))
+}
+
+function getCol(objArr, activeTile) {
+    const curCol = getCurrentColCoord(objArr, activeTile)
+    const pattern = new RegExp(`[0-8]-${curCol}`)
+    return objArr.filter((obj) => obj.coord.match(pattern))
+}
+
+function getCurrentRowCoord(objArr, activeTile) {
+    const activeCoord = activeTile.coord
+    const curRow = activeCoord.match(/([0-8])-[0-8]/)
+    return curRow[1]
+}
+
+function getCurrentColCoord(objArr, activeTile) {
+    const activeCoord = activeTile.coord
+    const curCol = activeCoord.match(/[0-8]-([0-8])/)
+    return curCol[1]
 }
 
 export function oneDto2D(flatString) {

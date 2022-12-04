@@ -4,6 +4,7 @@
     import {
         delRandElements,
         initObjectArray,
+        validateInRow,
     } from '../utils/arrayManipulation'
     import { validKeys } from '../utils/keyboardUtils'
     import { sample1 } from '../utils/sampleProblems'
@@ -64,6 +65,7 @@
         if (!activeTile) return
         if (!isTileReplaceable(activeTile)) return
 
+        console.log(validateInRow($tileState, activeTile))
         activeTile.userInputValue = e.key
         activeTile.isUserInput = true
 
