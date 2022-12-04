@@ -47,15 +47,22 @@
         })
     }
 
-    function keyDown(e) {
-        if (!validKeys.includes(e.key)) return
-
-        const activeTile = $tileState.find((tile) => {
+    function getActiveTile() {
+        return $tileState.find((tile) => {
             return tile.isActiveTile
         })
+    }
+
+    function isTileReplaceable(tile) {
+        return tile.isReplaceable
+    }
+
+    function updateTileVal(e) {
+        if (!validKeys.includes(e.key)) return
+
+        const activeTile = getActiveTile()
         if (!activeTile) return
-        const isReplaceable = activeTile.isReplaceable
-        if (!isReplaceable) return
+        if (!isTileReplaceable(activeTile)) return
 
         activeTile.userInputValue = e.key
         activeTile.isUserInput = true
@@ -66,7 +73,7 @@
 
 <svelte:window
     on:keydown={(e) => {
-        keyDown(e)
+        updateTileVal(e)
     }}
 />
 

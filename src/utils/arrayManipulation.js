@@ -1,5 +1,15 @@
+import { tileState } from '../stores/tileStateStore'
+
 let sample =
     '649123875827465139135789264518934627276518493493672518752346981364891752981257346'
+
+export function validateInRow() {
+    let state
+    const unsub = tileState.subscribe((val) => {
+        state = val
+    })
+    console.log(state)
+}
 
 export function oneDto2D(flatString) {
     let flatStringIdx = 0
