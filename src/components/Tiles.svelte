@@ -10,8 +10,8 @@
     export let isUserInput
 
     function tileClick(coord, isClickedTileActive) {
-        clearPreviousActiveTiles()
-
+        // clearPreviousActiveTiles()
+        console.log(coord)
         tileState.update((prevState) => {
             const tileToActivate = prevState.find(
                 (tileObj) => tileObj.coord === coord
@@ -28,10 +28,12 @@
         })
     }
 
-    function clearPreviousActiveTiles() {
+    function clearPreviousActiveTiles(coord) {
         tileState.update((prevState) => {
             prevState.forEach((tileObj) => {
-                tileObj.isActiveTile = false
+                if (tileObj.coord !== coord) {
+                    tileObj.isActiveTile = false
+                }
             })
             return prevState
         })
@@ -45,7 +47,10 @@
     class:replaceable-tile={isReplaceable}
     class:non-replaceable-tile={!isReplaceable}
     class:invalid-tile={!isValidValue}
-    on:click={() => tileClick(coord, isActive)}
+    on:click={() => {
+        clearPreviousActiveTiles(coord)
+        tileClick(coord, isActive)
+    }}
 >
     {userInputValue}
 </div>
