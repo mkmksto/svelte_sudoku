@@ -10,8 +10,6 @@
     export let isUserInput
 
     function tileClick(coord, isClickedTileActive) {
-        // clearPreviousActiveTiles()
-        console.log(coord)
         tileState.update((prevState) => {
             const tileToActivate = prevState.find(
                 (tileObj) => tileObj.coord === coord
