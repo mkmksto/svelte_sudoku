@@ -1,9 +1,11 @@
 <script>
     import { onMount } from 'svelte'
     import { tileState } from '../stores/tileStateStore'
-    import { delRandElements, initObjectArray, isInputValid } from '../utils/arrayManipulation'
+    import { initObjectArray } from '../utils/arrayManipulation'
     import { validKeys } from '../utils/keyboardUtils'
-    import { samples } from '../utils/sampleProblems'
+    import { puzzles } from '../utils/sampleProblems'
+    import { getPossibleValues, isCompleteAndValidSolution } from '../utils/solver'
+    import { isInputValid } from '../utils/validityChecker'
     import Tiles from './Tiles.svelte'
     import VizControls from './VizControls.svelte'
 
@@ -20,15 +22,17 @@
     }
 
     function populateTileStore() {
-        const curSample = samples[4]
-        const shownSample = delRandElements(curSample, 61)
+        // const curSample = samples[4]
+        // const shownSample = delRandElements(curSample, 61)
+        const curSample = puzzles[2]
 
         tileState.update((prevState) => {
             prevState.forEach((tileObj, idx) => {
                 tileObj.realValue = curSample[idx]
 
                 // values removed from original puzzle
-                if (shownSample[idx] != 'x') {
+                // if (shownSample[idx] != 'x') {
+                if (curSample[idx] != '0') {
                     tileObj.userInputValue = curSample[idx]
                     tileObj.isReplaceable = false
                     tileObj.isValidValue = true
@@ -74,61 +78,92 @@
         $tileState = $tileState
     }
 
-    function solve() {
-        for (let row = 0; row < 9; row++) {
-            for (let col = 0; col < 9; col++) {
-                for (let n = 1; n < 10; n++) {
-                    const activeTile = $tileState.find(
-                        (tileObj) => tileObj.coord === `${row}-${col}`
-                    )
-
-                    // skip values already present in the puzzle
-                    if (!activeTile.isReplaceable) continue
-                    console.log(activeTile)
-
-                    if (isInputValid($tileState, activeTile, n)) {
-                        updateTileVal(activeTile, n)
-                        // console.log(activeTile)
-                    }
-                    solve()
-                    // else
-                    activeTile.userInputValue = ''
-                    activeTile.isReplaceable = true
-                    $tileState = $tileState
-                }
-                return
-            }
-        }
-        console.log('done')
-    }
-
     function range(size, start = 1) {
         return [...Array(size).keys()].map((i) => i + start)
     }
 
+    function sleep(ms) {
+        return new Promise((res, rej) => {
+            setTimeout(res, ms)
+        })
+    }
+
+    async function solve(grid, row, col) {
+        if (col >= 9) {
+            if (row >= 8) {
+                return true
+            }
+            row++
+            col = 0
+        }
+
+        const curTile = $tileState.find((tileObj) => tileObj.coord === `${row}-${col}`)
+        // if tile is already populated, move to next tile
+        if (curTile.userInputValue) {
+            console.log(curTile)
+            return solve(grid, row, col + 1)
+        }
+
+        for (let n of range(9, 1)) {
+            if (isInputValid($tileState, curTile, n.toString())) {
+                // console.log(n + ' is valid for: ' + curTile.coord)
+                curTile.userInputValue = `${n}`
+                $tileState = $tileState
+                await sleep(20)
+
+                if (solve(grid, row, col + 1)) {
+                    // $tileState = $tileState
+                    return true
+                }
+            } else {
+                curTile.userInputValue = ''
+                $tileState = $tileState
+            }
+        }
+
+        console.log('unsolvable')
+        return false
+    }
+
     function solve2() {
-        let lastValidTile = '0-0'
-        for (let row = 0; row < 9; row++) {
-            for (let col = 0; col < 9; col++) {
-                // const hasValidValues = !! range(9).some(num => isInputValid($tileState, ))
-                // if ()
+        // Check if the current puzzle configuration is a complete and valid solution
+        if (isCompleteAndValidSolution($tileState)) {
+            // If it is, we're done!
+            console.log('Solution found!')
+            return true
+        }
 
-                let validValFound = false
-                for (let n = 1; n < 10; n++) {
-                    const activeTile = $tileState.find(
-                        (tileObj) => tileObj.coord === `${row}-${col}`
-                    )
-
-                    if (!activeTile.isReplaceable) continue
-                    // console.log('row col n', row, col, n)
-                    if (isInputValid($tileState, activeTile, n)) {
-                        activeTile.userInputValue = `${n}`
-                        lastValidTile = activeTile.coord
-                        continue
-                    }
+        // Find the empty tile with the fewest possible values
+        let minTile = null
+        let minPossibleValues = 10
+        for (const tile of $tileState) {
+            if (!tile.userInputValue) {
+                const possibleValues = getPossibleValues(tile)
+                if (possibleValues.length < minPossibleValues) {
+                    minTile = tile
+                    minPossibleValues = possibleValues.length
                 }
             }
         }
+
+        // Try each of the possible values for the empty tile with the fewest possible values
+        const possibleValues = getPossibleValues(minTile)
+        for (const value of possibleValues) {
+            // Try placing the value on the tile
+            updateTileVal(minTile, value)
+
+            // If the value is valid, recursively search for a solution
+            if (solve2()) {
+                // If a solution is found, we're done!
+                return true
+            } else {
+                // If a solution is not found, clear the tile and try the next value
+                clearTile(minTile)
+            }
+        }
+
+        // If we reach this point, no solution was found
+        return false
     }
 </script>
 
@@ -161,7 +196,7 @@
     {/each}
 </div>
 
-<VizControls on:click={solve} />
+<VizControls on:click={() => solve($tileState, 0, 0)} />
 
 <style>
     .board {
