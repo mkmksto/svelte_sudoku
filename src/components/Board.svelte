@@ -54,21 +54,21 @@
         return tile.isReplaceable
     }
 
-    function clearTile() {
-        const activeTile = getActiveTile()
-        activeTile.isValidValue = false
-        activeTile.userInputValue = ''
+    function clearTile(tileObj) {
+        tileObj.isValidValue = false
+        tileObj.userInputValue = ''
+        tileObj.isReplaceable = true
         $tileState = $tileState
     }
 
-    function updateTileVal(tileObj, keyPress) {
+    function updateTileVal(tileObj, newVal) {
         // validate first before assigning the user input to the tile
         // this makes things easier to validate
         // because IisInputValido take into account things like
         // comparing the value to itself
         // console.log(isInputValid($tileState, activeTile, e.key))
-        tileObj.isValidValue = isInputValid($tileState, tileObj, keyPress)
-        tileObj.userInputValue = keyPress
+        tileObj.isValidValue = isInputValid($tileState, tileObj, newVal)
+        tileObj.userInputValue = newVal
         tileObj.isUserInput = true
 
         $tileState = $tileState
@@ -87,9 +87,7 @@
                     console.log(activeTile)
 
                     if (isInputValid($tileState, activeTile, n)) {
-                        activeTile.userInputValue = `${n}`
-                        activeTile.isReplaceable = false
-                        $tileState = $tileState
+                        updateTileVal(activeTile, n)
                         // console.log(activeTile)
                     }
                     solve()
@@ -137,14 +135,13 @@
 <svelte:window
     on:keydown={(e) => {
         const keyPress = e.key
-        if (!validKeys.includes(keyPress)) return
-        if (keyPress === 'Delete') {
-            clearTile()
-            return
-        }
-
         const activeTile = getActiveTile()
         if (!activeTile) return
+        if (!validKeys.includes(keyPress)) return
+        if (keyPress === 'Delete') {
+            clearTile(activeTile)
+            return
+        }
         if (!isTileReplaceable(activeTile)) return
 
         updateTileVal(activeTile, keyPress)
