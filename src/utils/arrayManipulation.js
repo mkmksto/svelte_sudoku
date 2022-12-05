@@ -1,8 +1,3 @@
-// import { tileState } from '../stores/tileStateStore'
-
-let sample =
-    '649123875827465139135789264518934627276518493493672518752346981364891752981257346'
-
 /**
  *
  * @param {Array} objArr
@@ -154,7 +149,6 @@ export function delRandElements(str, numToDelete) {
         newArr[randIdx] = 'x'
     }
 
-    console.log(newArr)
     return newArr.join('')
 }
 

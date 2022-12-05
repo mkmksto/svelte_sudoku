@@ -7,10 +7,8 @@
         isInputValid,
     } from '../utils/arrayManipulation'
     import { validKeys } from '../utils/keyboardUtils'
-    import { sample1 } from '../utils/sampleProblems'
+    import { samples } from '../utils/sampleProblems'
     import Tiles from './Tiles.svelte'
-
-    // $tileState = initializeObjectArray()
 
     // !TODO: ask if i should move initstore outside onMount
     onMount(() => {
@@ -25,15 +23,16 @@
     }
 
     function populateTileStore() {
-        let newSample = delRandElements(sample1, 61)
+        const curSample = samples[4]
+        const shownSample = delRandElements(curSample, 61)
 
         tileState.update((prevState) => {
             prevState.forEach((tileObj, idx) => {
-                tileObj.realValue = sample1[idx]
+                tileObj.realValue = curSample[idx]
 
                 // values removed from original puzzle
-                if (newSample[idx] != 'x') {
-                    tileObj.userInputValue = sample1[idx]
+                if (shownSample[idx] != 'x') {
+                    tileObj.userInputValue = curSample[idx]
                     tileObj.isReplaceable = false
                     tileObj.isValidValue = true
                 } else {
