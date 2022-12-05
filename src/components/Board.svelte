@@ -1,14 +1,11 @@
 <script>
     import { onMount } from 'svelte'
     import { tileState } from '../stores/tileStateStore'
-    import {
-        delRandElements,
-        initObjectArray,
-        isInputValid,
-    } from '../utils/arrayManipulation'
+    import { delRandElements, initObjectArray, isInputValid } from '../utils/arrayManipulation'
     import { validKeys } from '../utils/keyboardUtils'
     import { samples } from '../utils/sampleProblems'
     import Tiles from './Tiles.svelte'
+    import VizControls from './VizControls.svelte'
 
     // !TODO: ask if i should move initstore outside onMount
     onMount(() => {
@@ -57,41 +54,105 @@
         return tile.isReplaceable
     }
 
-    function updateTileVal(e) {
-        if (!validKeys.includes(e.key)) return
-
+    function clearTile() {
         const activeTile = getActiveTile()
-        if (!activeTile) return
-        if (!isTileReplaceable(activeTile)) return
+        activeTile.isValidValue = false
+        activeTile.userInputValue = ''
+        $tileState = $tileState
+    }
 
-        if (e.key === 'Delete') {
-            activeTile.isValidValue = false
-            activeTile.userInputValue = ''
-            $tileState = $tileState
-            return
-        }
-
+    function updateTileVal(tileObj, keyPress) {
         // validate first before assigning the user input to the tile
         // this makes things easier to validate
         // because IisInputValido take into account things like
         // comparing the value to itself
         // console.log(isInputValid($tileState, activeTile, e.key))
-        activeTile.isValidValue = isInputValid($tileState, activeTile, e.key)
-        activeTile.userInputValue = e.key
-        activeTile.isUserInput = true
+        tileObj.isValidValue = isInputValid($tileState, tileObj, keyPress)
+        tileObj.userInputValue = keyPress
+        tileObj.isUserInput = true
 
         $tileState = $tileState
+    }
+
+    function solve() {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                for (let n = 1; n < 10; n++) {
+                    const activeTile = $tileState.find(
+                        (tileObj) => tileObj.coord === `${row}-${col}`
+                    )
+
+                    // skip values already present in the puzzle
+                    if (!activeTile.isReplaceable) continue
+                    console.log(activeTile)
+
+                    if (isInputValid($tileState, activeTile, n)) {
+                        activeTile.userInputValue = `${n}`
+                        activeTile.isReplaceable = false
+                        $tileState = $tileState
+                        // console.log(activeTile)
+                    }
+                    solve()
+                    // else
+                    activeTile.userInputValue = ''
+                    activeTile.isReplaceable = true
+                    $tileState = $tileState
+                }
+                return
+            }
+        }
+        console.log('done')
+    }
+
+    function range(size, start = 1) {
+        return [...Array(size).keys()].map((i) => i + start)
+    }
+
+    function solve2() {
+        let lastValidTile = '0-0'
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                // const hasValidValues = !! range(9).some(num => isInputValid($tileState, ))
+                // if ()
+
+                let validValFound = false
+                for (let n = 1; n < 10; n++) {
+                    const activeTile = $tileState.find(
+                        (tileObj) => tileObj.coord === `${row}-${col}`
+                    )
+
+                    if (!activeTile.isReplaceable) continue
+                    // console.log('row col n', row, col, n)
+                    if (isInputValid($tileState, activeTile, n)) {
+                        activeTile.userInputValue = `${n}`
+                        lastValidTile = activeTile.coord
+                        continue
+                    }
+                }
+            }
+        }
     }
 </script>
 
 <svelte:window
     on:keydown={(e) => {
-        updateTileVal(e)
+        const keyPress = e.key
+        if (!validKeys.includes(keyPress)) return
+        if (keyPress === 'Delete') {
+            clearTile()
+            return
+        }
+
+        const activeTile = getActiveTile()
+        if (!activeTile) return
+        if (!isTileReplaceable(activeTile)) return
+
+        updateTileVal(activeTile, keyPress)
     }}
 />
 
 <div class="board">
-    {#each $tileState as { coord, realValue, isActiveTile, userInputValue, isUserInput, isReplaceable, isValidValue } (coord)}
+    {#each $tileState as { coord, isActiveTile, userInputValue, isUserInput, isReplaceable, isValidValue } (coord)}
         <Tiles
             {coord}
             {userInputValue}
@@ -102,6 +163,8 @@
         />
     {/each}
 </div>
+
+<VizControls on:click={solve} />
 
 <style>
     .board {

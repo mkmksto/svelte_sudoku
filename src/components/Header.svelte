@@ -4,7 +4,7 @@
 
 <style>
     .header {
-        background-color: rgb(223, 35, 136);
+        background-color: var(--main-color);
         color: white;
         font-size: 1.7rem;
         position: fixed;
