@@ -6,9 +6,7 @@
  */
 export function isInputValid(objArr, activeTile, userInputValue) {
     // compare ONLY to previous user-input values(this includes the numbers present at the start of the puzzle), not to the real values
-    const localGroup = getLocalGroup(objArr, activeTile).map(
-        (obj) => obj.userInputValue
-    )
+    const localGroup = getLocalGroup(objArr, activeTile).map((obj) => obj.userInputValue)
     const localRow = getRow(objArr, activeTile).map((obj) => obj.userInputValue)
     const localCol = getCol(objArr, activeTile).map((obj) => obj.userInputValue)
 
@@ -51,11 +49,7 @@ function getLocalGroup(objArr, activeTile) {
 
     const localGroupCoords = []
     for (let row = localGroupLowestRow; row < localGroupLowestRow + 3; row++) {
-        for (
-            let col = localGroupLowestCol;
-            col < localGroupLowestCol + 3;
-            col++
-        ) {
+        for (let col = localGroupLowestCol; col < localGroupLowestCol + 3; col++) {
             localGroupCoords.push(`${row}-${col}`)
         }
     }
