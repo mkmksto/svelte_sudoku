@@ -125,7 +125,7 @@
         return false
     }
 
-    function solve2() {
+    async function solve2() {
         // Check if the current puzzle configuration is a complete and valid solution
         if (isCompleteAndValidSolution($tileState)) {
             // If it is, we're done!
@@ -138,7 +138,8 @@
         let minPossibleValues = 10
         for (const tile of $tileState) {
             if (!tile.userInputValue) {
-                const possibleValues = getPossibleValues(tile)
+                const possibleValues = getPossibleValues(tile, $tileState)
+                // console.log(possibleValues)
                 if (possibleValues.length < minPossibleValues) {
                     minTile = tile
                     minPossibleValues = possibleValues.length
@@ -147,10 +148,11 @@
         }
 
         // Try each of the possible values for the empty tile with the fewest possible values
-        const possibleValues = getPossibleValues(minTile)
+        const possibleValues = getPossibleValues(minTile, $tileState)
         for (const value of possibleValues) {
             // Try placing the value on the tile
             updateTileVal(minTile, value)
+            await sleep(70)
 
             // If the value is valid, recursively search for a solution
             if (solve2()) {
@@ -196,7 +198,8 @@
     {/each}
 </div>
 
-<VizControls on:click={() => solve($tileState, 0, 0)} />
+<!-- <VizControls on:click={() => solve($tileState, 0, 0)} /> -->
+<VizControls on:click={() => solve2()} />
 
 <style>
     .board {
