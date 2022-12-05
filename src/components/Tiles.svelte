@@ -56,7 +56,7 @@
 <style>
     :root {
         --default-border: 0.1px solid rgba(200, 200, 200, 0.3);
-        --three-by-three: 3px solid rgba(170, 170, 170, 0.35);
+        --three-by-three: 3px solid rgba(255, 40, 151, 0.501);
     }
 
     .tile {
@@ -65,6 +65,7 @@
         align-items: center;
         justify-content: center;
         font-size: 1.7rem;
+        font-weight: 500;
         color: rgb(90, 90, 90);
         width: 60px;
         height: 60px;

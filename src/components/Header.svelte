@@ -1,13 +1,15 @@
 <script></script>
 
-<div class="header">mkmksto's Sudoku</div>
+<div class="header">M's Sudoku Visualizer</div>
 
 <style>
     .header {
+        background-color: rgb(223, 35, 136);
+        color: white;
+        font-size: 1.7rem;
         position: fixed;
         width: 100%;
         height: 4rem;
-        border-bottom: 2px solid rgb(200, 200, 200);
         display: flex;
         justify-content: center;
         align-items: center;

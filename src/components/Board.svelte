@@ -64,6 +64,13 @@
         if (!activeTile) return
         if (!isTileReplaceable(activeTile)) return
 
+        if (e.key === 'Delete') {
+            activeTile.isValidValue = false
+            activeTile.userInputValue = ''
+            $tileState = $tileState
+            return
+        }
+
         // validate first before assigning the user input to the tile
         // this makes things easier to validate
         // because IisInputValido take into account things like
@@ -103,6 +110,8 @@
         grid-template-rows: repeat(9, 1fr);
         width: 540px;
         height: 540px;
+        border-radius: 20px;
+        overflow: hidden;
         box-shadow: 0 0 13px rgba(0, 0, 0, 0.1);
     }
 </style>

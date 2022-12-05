@@ -24,5 +24,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        border-radius: 20px;
     }
 </style>
