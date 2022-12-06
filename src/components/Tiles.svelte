@@ -24,7 +24,7 @@
         })
     }
 
-    export function clearPreviousActiveTiles(coord) {
+    function clearPreviousActiveTiles(coord) {
         tileState.update((prevState) => {
             prevState.forEach((tileObj) => {
                 if (tileObj.coord !== coord) {

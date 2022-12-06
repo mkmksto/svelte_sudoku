@@ -17,6 +17,11 @@ export function findNextEmpty(grid) {
     return '9-9'
 }
 
+/**
+ *
+ * @param {Array} tileState
+ * @returns
+ */
 export function isCompleteAndValidSolution(tileState) {
     // Check if all tiles have a value
     for (const tile of tileState) {
@@ -77,6 +82,11 @@ export function isCompleteAndValidSolution(tileState) {
     return true
 }
 
+/**
+ *
+ * @param {Array} values
+ * @returns
+ */
 function hasDuplicates(values) {
     // Convert the array of values to a set
     // This will remove any duplicate values
@@ -87,6 +97,12 @@ function hasDuplicates(values) {
     return set.size !== values.length
 }
 
+/**
+ *
+ * @param {Object} tileObj
+ * @param {Array} grid
+ * @returns
+ */
 export function getPossibleValues(tileObj, grid) {
     // Get the current row, column, and 3x3 sub-grid of the tile
     const row = tileObj.coord[0]
