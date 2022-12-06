@@ -49,6 +49,7 @@ Option to Slow down when backtracking -->
 
     .slider-cont label {
         margin-right: 1rem;
+        color: var(--font-color);
     }
 
     #speed-slider {
@@ -57,6 +58,10 @@ Option to Slow down when backtracking -->
         height: 0.4rem;
         background-color: rgb(230, 230, 230);
         border-radius: 5px;
+    }
+
+    .slider-val {
+        color: var(--font-color);
     }
 
     input[type='range']::-webkit-slider-thumb,
@@ -72,6 +77,7 @@ Option to Slow down when backtracking -->
     .btn {
         background-color: var(--main-color);
         color: white;
+        padding: 0.4rem 0.8rem;
     }
 
     .solve {

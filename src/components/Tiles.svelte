@@ -53,8 +53,8 @@
 
 <style>
     :root {
-        --default-border: 0.1px solid rgba(200, 200, 200, 0.3);
-        --three-by-three: 3px solid rgba(255, 40, 151, 0.501);
+        --default-border: 1.5px dotted rgba(200, 200, 200, 0.6);
+        --three-by-three: 4px dotted rgba(255, 40, 151, 0.501);
     }
 
     .tile {

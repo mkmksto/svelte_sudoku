@@ -17,6 +17,7 @@
 <style>
     :root {
         --main-color: rgb(223, 35, 136);
+        --font-color: rgb(150, 150, 150);
     }
 
     main {
