@@ -1,9 +1,10 @@
 <script>
     import { onMount } from 'svelte'
+    import { animationSpeed } from '../stores/animationSpecs'
     import { tileState } from '../stores/tileStateStore'
-    import { initObjectArray } from '../utils/arrayManipulation'
+    import { delRandElements, initObjectArray } from '../utils/arrayManipulation'
     import { validKeys } from '../utils/keyboardUtils'
-    import { puzzles } from '../utils/sampleProblems'
+    import { samples } from '../utils/sampleProblems'
     import { getPossibleValues, isCompleteAndValidSolution } from '../utils/solver'
     import { isInputValid } from '../utils/validityChecker'
     import Tiles from './Tiles.svelte'
@@ -22,17 +23,18 @@
     }
 
     function populateTileStore() {
-        // const curSample = samples[4]
-        // const shownSample = delRandElements(curSample, 61)
-        const curSample = puzzles[2]
+        let z = samples
+        const curSample = samples[4]
+        const shownSample = delRandElements(curSample, 45)
+        // const curSample = puzzles[3]
 
         tileState.update((prevState) => {
             prevState.forEach((tileObj, idx) => {
                 tileObj.realValue = curSample[idx]
 
                 // values removed from original puzzle
-                // if (shownSample[idx] != 'x') {
-                if (curSample[idx] != '0') {
+                if (shownSample[idx] != 'x') {
+                    // if (curSample[idx] != '0') {
                     tileObj.userInputValue = curSample[idx]
                     tileObj.isReplaceable = false
                     tileObj.isValidValue = true
@@ -88,44 +90,7 @@
         })
     }
 
-    async function solve(grid, row, col) {
-        if (col >= 9) {
-            if (row >= 8) {
-                return true
-            }
-            row++
-            col = 0
-        }
-
-        const curTile = $tileState.find((tileObj) => tileObj.coord === `${row}-${col}`)
-        // if tile is already populated, move to next tile
-        if (curTile.userInputValue) {
-            console.log(curTile)
-            return solve(grid, row, col + 1)
-        }
-
-        for (let n of range(9, 1)) {
-            if (isInputValid($tileState, curTile, n.toString())) {
-                // console.log(n + ' is valid for: ' + curTile.coord)
-                curTile.userInputValue = `${n}`
-                $tileState = $tileState
-                await sleep(20)
-
-                if (solve(grid, row, col + 1)) {
-                    // $tileState = $tileState
-                    return true
-                }
-            } else {
-                curTile.userInputValue = ''
-                $tileState = $tileState
-            }
-        }
-
-        console.log('unsolvable')
-        return false
-    }
-
-    async function solve2() {
+    async function solve() {
         // Check if the current puzzle configuration is a complete and valid solution
         if (isCompleteAndValidSolution($tileState)) {
             // If it is, we're done!
@@ -152,14 +117,18 @@
         for (const value of possibleValues) {
             // Try placing the value on the tile
             updateTileVal(minTile, value)
-            await sleep(70)
+
+            // console.count()
+            // console.log(minTile)
+            await sleep($animationSpeed)
 
             // If the value is valid, recursively search for a solution
-            if (solve2()) {
+            if (solve()) {
                 // If a solution is found, we're done!
                 return true
             } else {
                 // If a solution is not found, clear the tile and try the next value
+                console.log(minTile)
                 clearTile(minTile)
             }
         }
@@ -185,23 +154,29 @@
     }}
 />
 
-<div class="board">
-    {#each $tileState as { coord, isActiveTile, userInputValue, isUserInput, isReplaceable, isValidValue } (coord)}
-        <Tiles
-            {coord}
-            {userInputValue}
-            {isUserInput}
-            {isReplaceable}
-            {isValidValue}
-            bind:isActive={isActiveTile}
-        />
-    {/each}
+<div class="board-and-controls">
+    <div class="board">
+        {#each $tileState as { coord, isActiveTile, userInputValue, isUserInput, isReplaceable, isValidValue } (coord)}
+            <Tiles
+                {coord}
+                {userInputValue}
+                {isUserInput}
+                {isReplaceable}
+                {isValidValue}
+                bind:isActive={isActiveTile}
+            />
+        {/each}
+    </div>
+    <!-- <VizControls on:click={() => solve($tileState, 0, 0)} /> -->
+    <VizControls on:click={() => solve()} />
 </div>
 
-<!-- <VizControls on:click={() => solve($tileState, 0, 0)} /> -->
-<VizControls on:click={() => solve2()} />
-
 <style>
+    .board-and-controls {
+        display: flex;
+        flex-direction: column;
+    }
+
     .board {
         display: grid;
         grid-template-columns: repeat(9, 1fr);

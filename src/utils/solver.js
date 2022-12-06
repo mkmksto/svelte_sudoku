@@ -1,3 +1,22 @@
+/**
+ *
+ * @param {Array} grid
+ * @returns The coordinates of the next empty tile in format '0-0'
+ */
+export function findNextEmpty(grid) {
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            let curTile = grid.find((tileObj) => tileObj.coord === `${r}-${c}`)
+            if (!curTile.userInputValue) {
+                return curTile.coord
+            }
+        }
+    }
+
+    // if this is returned, there are no more empty squares
+    return '9-9'
+}
+
 export function isCompleteAndValidSolution(tileState) {
     // Check if all tiles have a value
     for (const tile of tileState) {
@@ -76,7 +95,8 @@ export function getPossibleValues(tileObj, grid) {
     const subgridCol = Math.floor(col / 3) * 3
 
     // Create a set of all possible values (1-9)
-    const possibleValues = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    const posArray = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => i.toString())
+    const possibleValues = new Set(posArray)
 
     // Remove any values that are already present in the row, column, or sub-grid
     for (let r = 0; r < 9; r++) {
@@ -85,6 +105,7 @@ export function getPossibleValues(tileObj, grid) {
         if (r !== row) {
             const tile = grid.find((tileObj) => tileObj.coord === `${r}-${col}`)
             possibleValues.delete(tile.userInputValue)
+            // console.log(tile.userInputValue)
         }
         if (r !== col) {
             const tile = grid.find((tileObj) => tileObj.coord === `${row}-${r}`)

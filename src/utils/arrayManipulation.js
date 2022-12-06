@@ -49,12 +49,19 @@ export function initObjectArray() {
  */
 export function delRandElements(str, numToDelete) {
     const newArr = str.split('')
-    for (let i = 0; i < numToDelete; i++) {
+    let numXinStr = 0
+
+    while (numXinStr <= numToDelete) {
         const randIdx = getRandomInt(0, str.length)
         newArr[randIdx] = 'x'
+        numXinStr = getNumOfxInArray(newArr.join(''))
     }
 
     return newArr.join('')
+}
+
+function getNumOfxInArray(str) {
+    return str.match(/x/g).length
 }
 
 function getRandomInt(min, max) {

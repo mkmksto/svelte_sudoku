@@ -6,6 +6,7 @@
  */
 export function isInputValid(objArr, activeTile, userInputValue) {
     // compare ONLY to previous user-input values(this includes the numbers present at the start of the puzzle), not to the real values
+    userInputValue = userInputValue.toString()
     const localGroup = getLocalGroup(objArr, activeTile).map((obj) => obj.userInputValue)
     const localRow = getRow(objArr, activeTile).map((obj) => obj.userInputValue)
     const localCol = getCol(objArr, activeTile).map((obj) => obj.userInputValue)
